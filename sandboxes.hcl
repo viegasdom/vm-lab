@@ -1,16 +1,14 @@
 
 
 
-
-
 resource "vm" "ubuntu" {
   image {
     name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/ubuntu-2204:latest"
   }
-  environment = {
-    "ROLE" = "beta"
-  }
-  startup_script = "#!/bin/sh\necho \"$${ROLE}-ok\" > /tmp/instruqt-startup-marker\n"
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
   config {
   }
   network {
@@ -22,12 +20,17 @@ resource "vm" "ubuntu" {
     memory = 2048
   }
   health_check {
-    timeout = "120s"
-    tcp {
-      address = "10.200.0.10:22"
+  timeout = "120s"
+
+  exec {
+    script = <<-EOF
+      #!/bin/sh -e
+      test -f /tmp/instruqt-startup-marker
+    EOF
     }
-    exec {
-      script = "#!/bin/sh -e\ntest -f /tmp/instruqt-startup-marker\nsystemctl is-active --quiet ssh"
-    }
+  }
+
+  environment = {
+  ROLE = "beta"
   }
 }
