@@ -2,6 +2,7 @@
 
 
 
+
 resource "vm" "ubuntu" {
   image {
     name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/ubuntu-2204:latest"
@@ -22,5 +23,11 @@ resource "vm" "ubuntu" {
   }
   health_check {
     timeout = "120s"
+    tcp {
+      address = "10.200.0.10:22"
+    }
+    exec {
+      script = "#!/bin/sh -e\ntest -f /tmp/instruqt-startup-marker\nsystemctl is-active --quiet ssh"
+    }
   }
 }
