@@ -43,7 +43,11 @@ resource "lab" "vm_lab" {
 
   settings {
     idle {
-      enabled = false
+      enabled      = false
+      show_warning = false
+    }
+    timelimit {
+      duration = "1h"
     }
   }
 
