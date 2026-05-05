@@ -1,15 +1,14 @@
 
 
 
-
 resource "vm" "ubuntu" {
   image {
     name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/ubuntu-2204:latest"
   }
-  environment = {
-    "ROLE" = "beta"
-  }
-  startup_script = "#!/bin/sh\necho \"$${ROLE}-ok\" > /tmp/instruqt-startup-marker\n"
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
   config {
   }
   network {
@@ -21,6 +20,17 @@ resource "vm" "ubuntu" {
     memory = 2048
   }
   health_check {
-    timeout = "120s"
+  timeout = "120s"
+
+  exec {
+    script = <<-EOF
+      #!/bin/sh -e
+      test -f /tmp/instruqt-startup-marker
+    EOF
+    }
+  }
+
+  environment = {
+  ROLE = "beta"
   }
 }
