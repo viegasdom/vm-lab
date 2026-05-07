@@ -22,7 +22,16 @@ resource "terminal" "shell" {
 resource "layout" "main" {
   column {
     tab "terminal" {
+      title  = "Container"
       target = resource.terminal.shell
+    }
+    tab "vm_terminal" {
+      title  = "VM"
+      target = resource.terminal.test123
+    }
+    tab "web" {
+      title  = "Web Server"
+      target = resource.service.web
     }
   }
 

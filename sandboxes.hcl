@@ -6,7 +6,17 @@ resource "vm" "ubuntu" {
   environment = {
     "ROLE" = "beta"
   }
-  startup_script = "#!/bin/sh\necho \"$${ROLE}-ok\" > /tmp/instruqt-startup-marker\n"
+  port {
+    local = "8080"
+    host  = "8080"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+  mkdir -p /tmp/www
+  echo "hello from vm" > /tmp/www/index.html
+  cd /tmp/www && nohup python3 -m http.server 8080 > /dev/null 2>&1 &
+EOT
   config {
   }
   network {
