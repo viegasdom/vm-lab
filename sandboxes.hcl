@@ -28,7 +28,7 @@ EOT
     memory = 2048
   }
   health_check {
-    timeout = "300s"
+    timeout = "600s"
     exec {
       script = "#!/bin/sh -e\ntest -f /tmp/instruqt-startup-marker\n"
     }
