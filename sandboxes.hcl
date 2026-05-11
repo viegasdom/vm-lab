@@ -1,24 +1,15 @@
-
 resource "vm" "ubuntu" {
   image {
     name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/ubuntu-2204:latest"
   }
   environment = {
-    "ROLE" = "beta"
-  }
-  port {
-    local = "8080"
-    host  = "8080"
+    "ROLE" = "ubuntu"
   }
   startup_script = <<-EOT
   #!/bin/sh
   echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
-  mkdir -p /tmp/www
-  echo "hello from vm" > /tmp/www/index.html
-  cd /tmp/www && nohup python3 -m http.server 8080 > /dev/null 2>&1 &
 EOT
-  config {
-  }
+  config {}
   network {
     id         = resource.network.lab_net.meta.id
     ip_address = "10.200.0.10"
@@ -27,10 +18,136 @@ EOT
     cpu    = 2
     memory = 2048
   }
-  health_check {
-    timeout = "600s"
-    exec {
-      script = "#!/bin/sh -e\ntest -f /tmp/instruqt-startup-marker\n"
-    }
+}
+
+resource "vm" "debian" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/debian-12:latest"
+  }
+  environment = {
+    "ROLE" = "debian"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.11"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
+  }
+}
+
+resource "vm" "fedora" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/fedora-41:latest"
+  }
+  environment = {
+    "ROLE" = "fedora"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.12"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
+  }
+}
+
+resource "vm" "centos" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/centos-8:latest"
+  }
+  environment = {
+    "ROLE" = "centos"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.13"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
+  }
+}
+
+resource "vm" "rockylinux" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/rockylinux-9:latest"
+  }
+  environment = {
+    "ROLE" = "rockylinux"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.14"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
+  }
+}
+
+resource "vm" "dockervm" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/docker-vm:latest"
+  }
+  environment = {
+    "ROLE" = "dockervm"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.15"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
+  }
+}
+
+resource "vm" "k3svm" {
+  image {
+    name = "europe-west1-docker.pkg.dev/instruqt/instruqt-sandbox/k3s-vm:latest"
+  }
+  environment = {
+    "ROLE" = "k3svm"
+  }
+  startup_script = <<-EOT
+  #!/bin/sh
+  echo "$${ROLE}-ok" > /tmp/instruqt-startup-marker
+EOT
+  config {}
+  network {
+    id         = resource.network.lab_net.meta.id
+    ip_address = "10.200.0.16"
+  }
+  resources {
+    cpu    = 2
+    memory = 2048
   }
 }

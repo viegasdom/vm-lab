@@ -21,17 +21,37 @@ resource "terminal" "shell" {
 
 resource "layout" "main" {
   column {
-    tab "terminal" {
+    tab "container" {
       title  = "Container"
       target = resource.terminal.shell
     }
-    tab "vm_terminal" {
-      title  = "VM"
-      target = resource.terminal.test123
+    tab "ubuntu" {
+      title  = "Ubuntu"
+      target = resource.terminal.ubuntu
     }
-    tab "web" {
-      title  = "Web Server"
-      target = resource.service.web
+    tab "debian" {
+      title  = "Debian"
+      target = resource.terminal.debian
+    }
+    tab "fedora" {
+      title  = "Fedora"
+      target = resource.terminal.fedora
+    }
+    tab "centos" {
+      title  = "CentOS"
+      target = resource.terminal.centos
+    }
+    tab "rockylinux" {
+      title  = "Rocky Linux"
+      target = resource.terminal.rockylinux
+    }
+    tab "dockervm" {
+      title  = "Docker VM"
+      target = resource.terminal.dockervm
+    }
+    tab "k3svm" {
+      title  = "K3s VM"
+      target = resource.terminal.k3svm
     }
   }
 
